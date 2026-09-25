@@ -307,7 +307,13 @@ async function webgpuAdapter() {
   if (params.get("backend") === "wasm") return { reason: "WASM forced by ?backend=wasm" };
   if (!("gpu" in navigator)) return { reason: "this browser has no WebGPU" };
   const adapter = await navigator.gpu.requestAdapter({ powerPreference: "high-performance" });
-  if (!adapter) return { reason: "no WebGPU adapter" };
+  if (!adapter) {
+    // Chrome on Linux ships WebGPU switched off; the user has to opt in.
+    const linuxChrome = /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent) && /Chrome\//.test(navigator.userAgent);
+    return { reason: linuxChrome
+      ? "no WebGPU adapter. On Linux, enable chrome://flags/#enable-unsafe-webgpu and chrome://flags/#enable-vulkan, then relaunch Chrome"
+      : "no WebGPU adapter" };
+  }
   const info = adapter.info || {};
   const desc = [info.vendor, info.architecture, info.device, info.description].filter(Boolean).join(" / ") || "unknown GPU";
   log(`WebGPU adapter: ${desc}; shader-f16: ${adapter.features.has("shader-f16")}`);
