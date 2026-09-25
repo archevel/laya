@@ -46,6 +46,16 @@ export const PRESETS = {
         { label: "the Monty Hall problem" }] },
     ],
   },
+  // Swap in another character to watch the gauge move: Sauron ≈ 2.7, the Grinch ≈ 1.9, Gru ≈ 0.8,
+  // Paddington ≈ 0. Keep the level labels short: descriptive ones made this checkpoint worse.
+  "The villain meter": {
+    text: "Darth Vader force-chokes officers who disappoint him and helps destroy a planet, but in the end he turns on the Emperor to save his son.",
+    questions: [
+      { type: "score", instructions: "How evil is this character?", options: [
+        { label: "good" }, { label: "morally grey" }, { label: "evil" }, { label: "pure evil" }] },
+      { type: "noul", instructions: "Does the character redeem themselves?" },
+    ],
+  },
   "The Ship of Theseus": {
     text: "Over the years every plank of Theseus' ship is replaced, one at a time. Someone collects the old planks and builds a second ship from them.",
     questions: [
