@@ -3,6 +3,7 @@
 // The encoder runs on WebGPU when there is a usable adapter, otherwise on WASM (CPU).
 // URL params: ?model=local (serve files from ./models/laya-web), ?backend=wasm (skip WebGPU).
 import { createAgent } from "./engine.js";
+import { PRESETS } from "./presets.js";
 
 const ORT_CDN = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/";
 const REMOTE = "https://huggingface.co/archevel/laya-web/resolve/da1f5571da8fa8d3147e7123bd91992b794150b2";
@@ -10,43 +11,6 @@ const params = new URLSearchParams(location.search);
 const BASE = params.get("model") === "local" ? new URL("models/laya-web", location.href).href : REMOTE;
 const FILES = { encoder: ["encoder.onnx", 569], head: ["head.onnx", 35] };
 const TYPE_NAMES = { choice: "Choice", noul: "Yes / no", score: "Scale" };
-
-const PRESETS = {
-  "Support ticket": {
-    text: "Hi, we were billed twice for March. Please refund the duplicate today or we will cancel our plan.",
-    questions: [
-      { type: "choice", instructions: "Which department should handle this?", options: [
-        { label: "billing", desc: "invoices, payments, refunds" },
-        { label: "technical", desc: "bugs, outages, system errors" },
-        { label: "sales", desc: "pricing, new contracts" },
-        { label: "other", desc: "everything else" }] },
-      { type: "score", instructions: "How urgent is this?", options: [
-        { label: "not urgent" }, { label: "soon" }, { label: "critical deadline or blocking issue" }] },
-      { type: "noul", instructions: "Does the user threaten to cancel or leave?" },
-      { type: "noul", instructions: "Does the user explicitly request a refund?" },
-    ],
-  },
-  "Product review": {
-    text: "The headphones sound great and the battery lasts forever, but the left ear cup started creaking after two weeks and support never answered my email.",
-    questions: [
-      { type: "choice", instructions: "What is the overall sentiment?", options: [
-        { label: "positive" }, { label: "mixed" }, { label: "negative" }] },
-      { type: "choice", instructions: "What is the main complaint about?", options: [
-        { label: "sound quality" }, { label: "battery" }, { label: "build quality" }, { label: "customer service" }, { label: "price" }] },
-      { type: "noul", instructions: "Does the reviewer mention contacting support?" },
-    ],
-  },
-  "Chat moderation": {
-    text: "lol you're so bad at this game, uninstall and never come back",
-    questions: [
-      { type: "score", instructions: "How toxic is this message?", options: [
-        { label: "not toxic" }, { label: "mildly rude" }, { label: "insulting" }, { label: "threatening or hateful" }] },
-      { type: "noul", instructions: "Is the message a direct attack on another person?" },
-      { type: "choice", instructions: "What should the moderator do?", options: [
-        { label: "allow" }, { label: "warn", desc: "send the author a warning" }, { label: "remove", desc: "delete the message" }, { label: "ban", desc: "remove the author" }] },
-    ],
-  },
-};
 
 const $ = (id) => document.getElementById(id);
 const els = {
@@ -438,8 +402,8 @@ els.share.addEventListener("click", async () => {
   setTimeout(() => (els.share.textContent = "Copy link to this setup"), 1500);
 });
 
-try { loadSetup(location.hash.length > 1 ? decodeSetup(location.hash.slice(1)) : PRESETS["Support ticket"]); }
-catch { loadSetup(PRESETS["Support ticket"]); }
+try { loadSetup(location.hash.length > 1 ? decodeSetup(location.hash.slice(1)) : Object.values(PRESETS)[0]); }
+catch { loadSetup(Object.values(PRESETS)[0]); }
 
 const gpu = await webgpuAdapter();
 if (await isCached() || params.get("model") === "local") loadModel(gpu);

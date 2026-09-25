@@ -66,6 +66,7 @@ phones with less memory.
 
     cd tools && npm install
     node smoke.mjs                                   # Node, CPU, local weights
+    node presets.mjs                                 # every example in public/presets.js, answers printed
     node browser-test.mjs http://localhost:8080/     # headless Chrome with WebGPU flags
     VK_ICD_FILENAMES=/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json node browser-test.mjs ...
 
