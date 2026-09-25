@@ -6,9 +6,10 @@ export const PRESETS = {
     questions: [
       { type: "noul", instructions: "Is the answer true?" },
       { type: "choice", instructions: "Who most likely gave this answer?", options: [
-        { label: "Conan the Barbarian" },
-        { label: "a Buddhist monk" },
         { label: "a kindergarten teacher" },
+        { label: "Conan the Barbarian" },
+        { label: "Arnold Schwarzenegger" },
+        { label: "a Buddhist monk" },
         { label: "a customer support agent" }] },
       { type: "choice", instructions: "What is actually best in life?", options: [
         { label: "crushing your enemies" },
