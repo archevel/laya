@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laya in the Browser</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.webgpu.min.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Laya</h1>
+    <p class="sub">Calibrated decisions from a 421M-parameter encoder, running on your GPU. Nothing leaves the page.</p>
+    <div class="model-bar">
+      <span id="backend" class="badge">not loaded</span>
+      <span id="status" class="status"></span>
+    </div>
+    <div id="gate" class="gate" hidden>
+      <p id="gate-text"></p>
+      <p id="gate-note" class="gate-note"></p>
+      <button id="gate-btn">Download model</button>
+    </div>
+    <div id="progress" class="progress" hidden><div id="bar"></div></div>
+  </header>
+
+  <section class="panel">
+    <div class="row-head">
+      <label for="state">Text</label>
+      <select id="preset" aria-label="Load an example">
+        <option value="">Examples…</option>
+      </select>
+    </div>
+    <textarea id="state" rows="5" placeholder="An email, a support ticket, a review, a chat message…"></textarea>
+  </section>
+
+  <section>
+    <div id="questions"></div>
+    <div class="add-row">
+      <button class="secondary" data-add="choice">+ Choice</button>
+      <button class="secondary" data-add="noul">+ Yes / no</button>
+      <button class="secondary" data-add="score">+ Scale</button>
+    </div>
+  </section>
+
+  <div class="run-row">
+    <button id="run" disabled>Ask</button>
+    <span class="hint">Ctrl+Enter</span>
+    <button id="share" class="link">Copy link to this setup</button>
+  </div>
+
+  <section id="results" class="results" aria-live="polite"></section>
+
+  <details class="log">
+    <summary>Log</summary>
+    <pre id="log"></pre>
+  </details>
+
+  <footer>
+    Model: <a href="https://huggingface.co/convaiinnovations/laya">convaiinnovations/laya</a> (Apache-2.0),
+    8-bit ONNX export by <a href="https://huggingface.co/harshpreet931/cut-laya-onnx">harshpreet931</a> (<a href="https://huggingface.co/archevel/laya-web">WebGPU copy</a>),
+    runtime <a href="https://github.com/NandhaKishorM/laya/tree/main/laya-ts">laya-ts</a> +
+    onnxruntime-web.
+  </footer>
+</main>
+
+<template id="q-template">
+  <article class="q">
+    <div class="q-top">
+      <span class="q-type"></span>
+      <input class="q-ins" placeholder="Question">
+      <button class="icon remove" title="Remove question" aria-label="Remove question">×</button>
+    </div>
+    <ol class="opts"></ol>
+    <button class="link add-opt">+ option</button>
+  </article>
+</template>
+</body>
+</html>

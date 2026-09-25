@@ -1,0 +1,11 @@
+{
+  "name": "laya-tools",
+  "version": "1.0.0",
+  "scripts": {},
+  "dependencies": {
+    "onnxruntime-node": "1.23",
+    "puppeteer-core": "^25.12.0"
+  },
+  "private": true,
+  "type": "module"
+}
